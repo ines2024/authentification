@@ -4,23 +4,29 @@ const jwt=require("jsonwebtoken")
 exports.register=async(req,res)=>{
     const {name,email,password,phone}=req.body
 try {
-    const find=users.findOne({email})
-    if (find===true){
+    const find=await users.findOne({email})
+    console.log(find)
+    if (find){
         res.status(400).send({msg :"user exist"})
+
 
     }
     else{
 const user=new users(req.body)
 const hashpassword=bcrypt.hashSync(password,10)
+
 user.password=hashpassword
 const token=jwt.sign({id:user._id},"123456")
 await user.save()
 res.status(200).send({msg:"register succussfully",user,token})
+
     }
 } catch (error) {
     res.status(500).send(error)
 }
 }
+
+
 exports.login=async(req,res)=>{
     const {email,password}=req.body
     try {
