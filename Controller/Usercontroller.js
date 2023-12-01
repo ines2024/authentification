@@ -7,7 +7,7 @@ try {
     const find=await users.findOne({email})
     console.log(find)
     if (find){
-        res.status(400).send({msg :"user exist"})
+        res.status(400).send({errors:[{msg :"user exist"}]})
 
 
     }
@@ -32,12 +32,12 @@ exports.login=async(req,res)=>{
     try {
         const user=await users.findOne({email})
         if (!user){
-            res.status(400).send({msg:"user does not exist you need to register"})
+            res.status(400).send({errors:[{msg:"user does not exist you need to register"}]})
         }
         else {
            const hashpassword=bcrypt.compareSync(password,user.password) 
            if (!hashpassword){
-res.status(400).send({msg:"wrong password"})
+res.status(400).send({errors:[{msg:"wrong password"}]})
            }
            else {
             const token=jwt.sign({id:user._id},"123456")
@@ -48,5 +48,14 @@ res.status(400).send({msg:"wrong password"})
         
     } catch (error) {
         res.status(500).send(error)
+
+    }
+}
+exports.updateuser=async(req,res)=>{
+    try {
+        const user=await users.findByIdAndUpdate(req.params.id,{$set:{...req.body}},{new:true})
+        res.status(200).send({msg:"user updated",user})
+    } catch (error) {
+       console.log(error) 
     }
 }
