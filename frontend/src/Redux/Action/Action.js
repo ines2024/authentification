@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GETCURRENT, LOGIN, REGISTER } from "../Actiontype/Actiontype"
+import { GETCURRENT, LOGIN, LOGOUT, REGISTER } from "../Actiontype/Actiontype"
 import { alerterror } from "./Erroraction"
 export const register=(data,navigate)=>async(dispatch)=>{
     try {
@@ -35,4 +35,11 @@ export const getcurrent=()=>async(dispatch)=>{
     } catch (error) {
         console.log(error)
     }
+}
+export const logout=(navigate)=>{
+localStorage.removeItem("token")
+navigate("/Login")
+return{
+    type:LOGOUT   
+}
 }

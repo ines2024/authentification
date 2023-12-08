@@ -3,6 +3,7 @@ import "./Register.css"
 import { useDispatch } from 'react-redux'
 import { register } from '../Redux/Action/Action'
 import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 function Register() {
 const [name,setName] =useState("")  
 const [password,setPassword] =useState("")  
@@ -14,7 +15,10 @@ const dispatch=useDispatch()
 const navigate=useNavigate()
 const Registration=()=>{
     dispatch(register({name,email,password,phone},navigate))
+    const res=axios.post("/user/email",{email}).
+then(res=>console.log(res))
 }
+
   return (
     <div>
 
